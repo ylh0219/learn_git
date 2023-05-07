@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQ抽奖活动</title>
+    <link rel="shortcut icon" href="./img/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        html {
+            background-image: url(./img/bg_02.png);
+            background-position: 0 1300px;
+        }
+
+        body {
+            position: relative;
+            user-select: none;
+        }
+
+        body::before {
+            content: '';
+            display: table;
+        }
+
+
+        .huigui {
+            margin-top: 50px;
+            position: sticky;
+            top: -50px;
+            left: 0px;
+            transition: .5s;
+            display: flex;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .huigui:hover {
+            top: 0;
+        }
+
+        .huigui a {
+            display: inline-block;
+            width: 383px;
+            height: 92px;
+            margin: 0 10px;
+            background-image: url(./img/spr_comm.png);
+            background-repeat: no-repeat;
+        }
+
+        .huigui a:hover {
+            filter: brightness(1.3);
+        }
+
+        .hg1 {
+            background-position: -599px -673px;
+        }
+
+        .hg2 {
+            background-position: -599px -770px;
+        }
+
+        .hg3 {
+            background-position: -2797px -2210px;
+        }
+
+        .old {
+            height: 119px;
+            width: 1271px;
+            background-image: url(./img/spr_comm.png);
+            background-size: 3660px 2592px;
+            background-repeat: no-repeat;
+            background-position: 0 -2087px;
+            margin: 80px auto 0;
+        }
+
+        .luck,
+        .luck-box {
+            width: 1200px;
+            height: 538px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .lc-prop-0,
+        .lc-prop-1,
+        .lc-prop-2,
+        .lc-prop-3 {
+            background-position: -595px 0;
+            width: 285px;
+            height: 166px;
+            background-image: url(./img/spr_lottery.png);
+            background-size: 880px 679px;
+            background-repeat: no-repeat;
+        }
+
+        .lc-prop-4,
+        .lc-prop-5 {
+            background-position: -595px -171px;
+            width: 285px;
+            height: 166px;
+            background-image: url(./img/spr_lottery.png);
+            background-size: 880px 679px;
+            background-repeat: no-repeat;
+        }
+
+        .lc-prop-6 {
+            background-position: 0 0;
+            width: 590px;
+            height: 166px;
+            background-image: url(./img/spr_lottery.png);
+            background-size: 880px 679px;
+            background-repeat: no-repeat;
+        }
+
+        .lc-prop-7 {
+            background-position: -290px -171px;
+            width: 285px;
+            height: 166px;
+            background-image: url(./img/spr_lottery.png);
+            background-size: 880px 679px;
+            background-repeat: no-repeat;
+        }
+
+        .lc-prop-8 {
+            background-position: 0 -342px;
+            width: 285px;
+            height: 166px;
+            background-image: url(./img/spr_lottery.png);
+            background-size: 880px 679px;
+            background-repeat: no-repeat;
+        }
+
+        .lc-prop-0 {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .lc-prop-1 {
+            position: absolute;
+            left: 308px;
+            top: 0;
+        }
+
+        .lc-prop-2 {
+            position: absolute;
+            left: 615px;
+            top: 0;
+        }
+
+        .lc-prop-3 {
+            position: absolute;
+            left: 923px;
+            top: 0;
+        }
+
+        .lc-prop-8 {
+            position: absolute;
+            left: 0;
+            top: 186px;
+        }
+
+        .lc-prop-7 {
+            position: absolute;
+            left: 0;
+            top: 372px;
+        }
+
+        .lc-prop-6 {
+            position: absolute;
+            left: 308px;
+            top: 372px;
+        }
+
+        .lc-prop-5 {
+            position: absolute;
+            left: 923px;
+            top: 372px;
+        }
+
+        .lc-prop-4 {
+            position: absolute;
+            left: 923px;
+            top: 186px;
+        }
+
+        .tool-bar {
+            width: 584px;
+            position: absolute;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+            top: 224px;
+            text-align: center;
+        }
+
+        .tool-bar a:nth-child(2) {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 10px;
+            background-position: -929px -948px;
+            width: 232px;
+            height: 59px;
+            background-image: url(./img/spr_comm.png);
+            transition: 2s;
+        }
+
+        .tool-bar a:nth-child(1) {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 10px;
+            background-position: -948px -867px;
+            width: 232px;
+            height: 59px;
+            background-image: url(./img/spr_comm.png);
+            transition: 2s;
+        }
+
+        .tool-bar a:hover {
+            filter: brightness(1.3);
+        }
+
+        .txt {
+            color: #E82654;
+            padding: 20px 0;
+        }
+
+        .txt::before {
+            content: '剩余钥匙数:';
+            color: #E82654;
+        }
+
+        .lc-prop {
+            text-align: center;
+        }
+
+        .lc-prop div {
+            width: 100%;
+            height: 110px;
+            position: relative;
+        }
+
+        .lc-prop.lc-prop-6 div {
+            height: 100%;
+        }
+
+        .lc-prop img {
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0px;
+        }
+
+        p.name {
+            color: #E82654;
+            position: absolute;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+            bottom: 2px;
+        }
+
+        .lc-prop a {
+            display: block;
+            height: 35px;
+            width: 163px;
+            margin: 0 auto;
+            background-image: url(./img/spr_lottery.png);
+            background-size: 880px 679px;
+            background-repeat: no-repeat;
+            background-position: -579px -513px;
+            text-align: center;
+            line-height: 35px;
+        }
+
+        .lc-prop a::before {
+            content: '更换奖励';
+            color: white;
+        }
+
+        .active {
+            filter: brightness(1.5);
+        }
+
+        .alert1 {
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, .5);
+            z-index: 5;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+
+        .le1 {
+            width: 350px;
+            height: 204px;
+            margin: auto;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -200px;
+            bottom: 0;
+        }
+
+        .le1-img {
+            position: absolute;
+            width: 190px;
+            height: 150px;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+        }
+
+        .le1 img {
+            width: 100%;
+
+        }
+
+        .le1-jp {
+            position: absolute;
+            top: 20px;
+            max-height: 100%;
+            min-height: 100%;
+            margin: auto;
+            object-fit: contain;
+            background-position: center center;
+        }
+
+        .le1 p {
+            color: #FDB300;
+            font-weight: bold;
+            letter-spacing: 5px;
+            position: absolute;
+            bottom: 20px;
+            margin: 0 auto;
+            width: fit-content;
+            left: 0;
+            right: 0;
+        }
+
+        #click {
+            height: 30px;
+            width: 350px;
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: -60px;
+        }
+
+        #click a {
+            cursor: pointer;
+            display: inline-block;
+            line-height: 50px;
+            text-align: center;
+            color: white;
+            width: 160px;
+            height: 50px;
+            background-image: url(./img/ale-a.png);
+        }
+
+        #click a:hover {
+            filter: brightness(1.4);
+        }
+
+        .close {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            position: absolute;
+            right: -45px;
+            top: 0px;
+            background-image: url(./img/ale-close.png);
+            cursor: pointer;
+        }
+
+        .close:hover {
+            filter: brightness(.6);
+        }
+
+        #btn,
+        #btn1 {
+            cursor: pointer;
+        }
+
+        .ckalert {
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.3);
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+
+        .xuanze {
+            width: 350px;
+            height: 160px;
+            background-color: #2196F3;
+            border-radius: 10px;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .xuanzeheader {
+            line-height: 30px;
+            height: 30px;
+            color: white;
+            font-size: 14px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .xuanzeheader img {
+            height: 15px;
+            position: absolute;
+            filter: invert(1);
+            margin: auto 10px auto 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            cursor: pointer;
+        }
+
+        .xzmain {
+            height: 131px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .xzmain select {
+            width: 334px;
+            height: 30px;
+            line-height: 30px;
+            margin-top: 10px;
+        }
+
+        .xzbta {
+            width: 334px;
+            margin: 10px auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .xzbta a {
+            display: inline-block;
+            width: 150px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .xzbta a:hover {
+            filter: brightness(.9);
+        }
+
+        .xzbta a:nth-child(1) {
+            background-color: #2196F3;
+        }
+
+        .xzbta a:nth-child(2) {
+            background-color: #A7A6A4;
+        }
+
+        .jilu {
+            margin: 0 auto;
+            width: 1200px;
+            color: #FF701D;
+            margin-bottom: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+
+        #box {
+            align-items: center;
+            white-space: pre;
+            -webkit-rtl-ordering: logical;
+        }
+
+        .recordBox {
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, .5);
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index: 2;
+            display: none;
+        }
+
+        .recordouter {
+            width: 594px;
+            background-color: #D2C6A4;
+            min-height: 188px;
+            max-height: 460px;
+            position: absolute;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .recordouter img {
+            position: absolute;
+            right: 0;
+            top: 0;
+            cursor: pointer;
+        }
+
+        .recheader {
+            height: 51px;
+            width: 93%;
+            margin: 0 auto;
+            border-bottom: 2px solid #dcd2bb;
+        }
+
+        #rectable {
+            width: 510px;
+            margin: 0 auto;
+            border: #b89976 1px solid;
+            min-height: 88px;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        #rectable th {
+            border: #b89976 1px solid;
+            padding: 5px 0;
+            color: #5d2915;
+        }
+
+        #rectable tbody {
+            max-height: 290px;
+        }
+
+        .over {
+            max-height: 370px;
+            overflow-y: auto;
+            width: 535px;
+            margin: 0 auto;
+        }
+
+        .eche-main {
+            height: 100%;
+            line-height: 50px;
+            text-align: center;
+            border-bottom: #b1a481 1px solid;
+        }
+
+        .topye {
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .botmye {
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-left: 5px;
+        }
+
+        #rectable tr {
+            border: #b89976 1px solid;
+            text-align: center;
+            height: 29px;
+        }
+
+        .dyData-data div {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .dyData-data div span {
+            width: 33.33%;
+        }
+
+        .tcp {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            background-color: rgba(0, 0, 0, .3);
+            top: 0;
+            left: 0;
+            z-index: 2;
+            display: none;
+        }
+
+        .tcpbox {
+            width: max-content;
+            height: fit-content;
+            padding: 50px 0 50px 0;
+            background-image: url(./img/48bj.png);
+            background-size: 100% 100%;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .tcpimg {
+            width: 220px;
+            height: 160px;
+            text-align: center;
+            display: inline-block;
+            color: #FDB300;
+        }
+
+        .tcpimg img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .tcpimg p {
+            margin: 20px 0;
+        }
+
+        .shibtn {
+            display: flex;
+            margin-top: 20px;
+            justify-content: space-around;
+        }
+
+        .zaishi,
+        .quxiao {
+            width: 160px;
+            height: 55px;
+            cursor: pointer;
+
+        }
+
+        .zaishi {
+            margin-right: -220px;
+            background-image: url(./img/46queren.png);
+        }
+
+        .zaishi:hover {
+            filter: brightness(1.3);
+        }
+
+        .quxiao {
+            background-image: url(./img/47quxiao.png);
+        }
+
+        .quxiao:hover {
+            filter: brightness(1.3);
+        }
+
+        .close49 {
+            width: 70px;
+            height: 70px;
+            background-image: url(./img/49close.png);
+            position: absolute;
+            right: 0;
+            top: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="huigui">
+        <a href="javascript:;" class="hg1"></a><a href="javascript:;" class="hg2"></a><a href="javascript:;"
+            class="hg3"></a>
+    </div>
+    <div class="old"></div>
+
+    <div class="jilu"><span style="color: rgb(221, 221, 221); font-size: 12px;">欢迎您</span><span
+            class="change">更改绑定</span><span class="mylibao">【我的礼包】</span> &nbsp; 【个人中心】</div>
+    <div class="luck-box">
+        <div class="luck">
+            <div class="lc-prop lc-prop-0">
+                <div>
+                    <img src="./img/36.png" alt="">
+                    <p class="name">M4A1-雷神(永久)</p>
+                </div>
+                <a href="javascript:;"></a>
+            </div>
+            <div class="lc-prop lc-prop-1">
+                <div>
+                    <img src="./img/37.png" alt="">
+                    <p class="name">沙鹰-修罗(永久)</p>
+                </div>
+                <a href="javascript:;"></a>
+            </div>
+            <div class="lc-prop lc-prop-2">
+                <div>
+                    <img src="./img/38.png" alt="">
+                    <p class="name">麒麟刺(永久)</p>
+                </div>
+                <a href="javascript:;"></a>
+            </div>
+            <div class="lc-prop lc-prop-3">
+                <div>
+                    <img src="./img/39.png" alt="">
+                    <p class="name">樱(永久)</p>
+                </div>
+                <a href="javascript:;"></a>
+            </div>
+            <div class="lc-prop lc-prop-4">
+                <div>
+                    <img src="./img/40.png" alt="">
+                    <p class="name">超级护目镜(永久)</p>
+                </div>
+                <a href="javascript:;"></a>
+            </div>
+            <div class="lc-prop lc-prop-5">
+                <div>
+                    <img src="./img/41.png" alt="">
+                    <p class="name">雷神-星空皮肤(永久)</p>
+                </div>
+                <a href="javascript:;"></a>
+            </div>
+            <div class="lc-prop lc-prop-6">
+                <div>
+                    <img src="./img/42.png" alt="">
+                    <p class="name">神秘道具</p>
+                </div>
+            </div>
+            <div class="lc-prop lc-prop-7">
+                <div>
+                    <img src="./img/34.png" alt="">
+                    <p class="name">9A91-赤血龙魂(永久)</p>
+                </div>
+                <a href="javascript:;"></a>
+            </div>
+            <div class="lc-prop lc-prop-8">
+                <div>
+                    <img src="./img/35.png" alt="">
+                    <p class="name">兰-海滩派对(永久)</p>
+                </div>
+                <a href="javascript:;"></a>
+            </div>
+        </div>
+        <div class="tool-bar">
+            <div class="btn-bar">
+                <a id="btn"></a>
+                <a id="btn1"></a>
+            </div>
+            <p class="txt">
+                <span class="yaoshi">9999999</span>
+            </p>
+        </div>
+    </div>
+    <div class="alert1">
+        <div class="le1">
+            <div class="le1-img">
+                <img src="./img/38.png" alt="" class="le1-jp">
+            </div>
+            <img src="./img/ale.png">
+            <p>神秘道具</p>
+            <div class="close"></div>
+        </div>
+        <div id="click">
+            <a class="a1">再抽一次</a><a class="a2">存入仓库</a>
+        </div>
+    </div>
+    <div class="ckalert">
+        <div class="xuanze">
+            <div class="xuanzeheader">请选择大区<img src="./img/44.png" alt=""></div>
+            <div class="xzmain">
+                <select name="daqu1" id="daqu">
+                    <option selected='selected'>请选择大区</option>
+                    <option>上海电信</option>
+                    <option>广东电信</option>
+                    <option>广西电信</option>
+                    <option>南方电信</option>
+                    <option>湖南电信</option>
+                    <option>湖北电信</option>
+                    <option>浙江电信</option>
+                    <option>江苏电信</option>
+                    <option>福建电信</option>
+                    <option>江西电信</option>
+                    <option>陕西电信</option>
+                    <option>四川电信</option>
+                    <option>重庆电信</option>
+                    <option>安徽电信</option>
+                    <option>云南电信</option>
+                    <option>北方网通</option>
+                    <option>辽宁网通</option>
+                    <option>黑龙江网通</option>
+                    <option>吉林网通</option>
+                    <option>北京网通</option>
+                    <option>山东网通</option>
+                    <option>山西网通</option>
+                    <option>河南网通</option>
+                    <option>河北网通</option>
+                    <option>移动专区</option>
+                    <option>教育网专区</option>
+                </select>
+                <select name="qufu1" id="qufu">
+                    <option selected='selected'>请选择服务器</option>
+                    <option>电信一区</option>
+                    <option>电信二区</option>
+                </select>
+                <div class="xzbta"><a>确认</a><a>取消</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="recordBox">
+        <div class="recordouter">
+            <div class="recheader">
+                <div class="eche-main">我的奖品</div>
+            </div>
+            <div class="over">
+                <table cellspacing='0' id="rectable">
+                    <thead>
+                        <tr>
+                            <th>领取礼包</th>
+                            <th>领取大区</th>
+                            <th>领取时间</th>
+                        </tr>
+                    </thead>
+                    <tbody class="dynamicData">
+                        <tr>
+                            <td colspan="3" class="shangwei">您尚未获得任何礼包</td>
+                        </tr>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">上下滚动翻页</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div style="color: #cf4400; font-size: 12px; padding:10px 0; text-align: center;">
+                温馨提示:虚拟道具奖品将在24小时内发放到您的游戏仓库。谢谢您的理解与支持！</div>
+            <img class="tguanbi" src="./img/45close.png" title="关闭">
+        </div>
+    </div>
+    <div class="tcp">
+        <div class="tcpbox">
+            <div class="tcpimg">
+                <img class="shimg0" src="./img/39.png" alt="">
+                <p class="ship0">樱(永久)</p>
+            </div>
+            <div class="tcpimg">
+                <img class="shimg1" src="./img/39.png" alt="">
+                <p class="ship1">樱(永久)</p>
+            </div>
+            <div class="tcpimg">
+                <img class="shimg2" src="./img/39.png" alt="">
+                <p class="ship2">樱(永久)</p>
+            </div>
+            <div class="tcpimg">
+                <img class="shimg3" src="./img/39.png" alt="">
+                <p class="ship3">樱(永久)</p>
+            </div>
+            <div class="tcpimg">
+                <img class="shimg4" src="./img/39.png" alt="">
+                <p class="ship4">樱(永久)</p>
+            </div>
+            <br>
+            <br>
+            <div class="tcpimg">
+                <img class="shimg5" src="./img/41.png" alt="">
+                <p class="ship5">雷神-星空皮肤(永久)</p>
+            </div>
+            <div class="tcpimg">
+                <img class="shimg6" src="./img/39.png" alt="">
+                <p class="ship6">樱(永久)</p>
+            </div>
+            <div class="tcpimg">
+                <img class="shimg7" src="./img/39.png" alt="">
+                <p class="ship7">樱(永久)</p>
+            </div>
+            <div class="tcpimg">
+                <img class="shimg8" src="./img/39.png" alt="">
+                <p class="ship8">樱(永久)</p>
+            </div>
+            <div class="tcpimg">
+                <img class="shimg9" src="./img/39.png" alt="">
+                <p class="ship9">樱(永久)</p>
+            </div>
+            <div class="shibtn">
+                <div class="zaishi"></div>
+                <div class="quxiao"></div>
+            </div>
+            <div class="close49" title="关闭"></div>
+        </div>
+    </div>
+
+    <script src="./jq/jquery-1.11.0.min.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
